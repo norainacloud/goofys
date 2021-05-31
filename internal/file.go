@@ -187,11 +187,11 @@ func (fh *FileHandle) partSize() uint64 {
 	var size uint64
 
 	if fh.lastPartId < 1000 {
-		size = 5 * 1024 * 1024
+		size = fh.inode.fs.flags.MPUPartSize
 	} else if fh.lastPartId < 2000 {
-		size = 25 * 1024 * 1024
+		size = fh.inode.fs.flags.MPUPartSize
 	} else {
-		size = 125 * 1024 * 1024
+		size = fh.inode.fs.flags.MPUPartSize
 	}
 
 	maxPartSize := fh.cloud.Capabilities().MaxMultipartSize
@@ -382,7 +382,7 @@ func (fh *FileHandle) readFromReadAhead(offset uint64, buf []byte) (bytesRead in
 		if err != nil {
 			if err == io.EOF && readAheadBuf.size != 0 {
 				// in case we hit
-				// https://github.com/kahing/goofys/issues/464
+				// https://github.com/norainacloud/goofys/issues/464
 				// again, this will convert that into
 				// an error
 				fuseLog.Errorf("got EOF when data remains: %v", *fh.inode.FullName())

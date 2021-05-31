@@ -16,7 +16,7 @@
 package internal
 
 import (
-	. "github.com/kahing/goofys/api/common"
+	. "github.com/norainacloud/goofys/api/common"
 
 	"fmt"
 	"io"
@@ -86,7 +86,7 @@ func NewApp() (app *cli.App) {
 
 	app = &cli.App{
 		Name:     "goofys",
-		Version:  "0.24.0-" + VersionHash,
+		Version:  "0.24.0-noraina-" + VersionHash,
 		Usage:    "Mount an S3 bucket locally",
 		HideHelp: true,
 		Writer:   os.Stderr,
@@ -136,6 +136,12 @@ func NewApp() (app *cli.App) {
 				Name:  "gid",
 				Value: gid,
 				Usage: "GID owner of all inodes.",
+			},
+
+			cli.IntFlag{
+				Name:  "MPUPartSize",
+				Value: 5 * 1024 * 1024,
+				Usage: "MPU part size.",
 			},
 
 			/////////////////////////
@@ -341,6 +347,9 @@ func PopulateFlags(c *cli.Context) (ret *FlagStorage) {
 		DebugFuse:  c.Bool("debug_fuse"),
 		DebugS3:    c.Bool("debug_s3"),
 		Foreground: c.Bool("f"),
+
+		// MPU
+		MPUPartSize: uint64(c.Int("MPUPartSize")),
 	}
 
 	// S3

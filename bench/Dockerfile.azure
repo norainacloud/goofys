@@ -35,4 +35,4 @@ ADD . /root/go/src/github.com/kahing/goofys
 WORKDIR /root/go/src/github.com/kahing/goofys
 RUN go get . && make install
 
-ENTRYPOINT ["/root/go/src/github.com/kahing/goofys/bench/run_bench.sh"]
+ENTRYPOINT ["/root/go/src/github.com/norainacloud/goofys/bench/run_bench.sh"]
